@@ -2,8 +2,15 @@ import 'package:cours_01/res/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String _email = '';
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +32,17 @@ class LoginPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const SizedBox(height: 12),
-              EmailField(),
+              EmailField(
+                onChanged: (value) {
+                  setState(() {
+                    _email = value;
+                  });
+                },
+              ),
               const SizedBox(height: 16),
-              ContinueButton(onPressed: () {}),
+              ContinueButton(
+                onPressed: _email.isNotEmpty ? () {} : null,
+              ),
               const SizedBox(height: 24),
               const OrSeparator(),
               const SizedBox(height: 24),
@@ -57,11 +72,14 @@ class LoginPage extends StatelessWidget {
 }
 
 class EmailField extends StatelessWidget {
-  const EmailField({super.key});
+  const EmailField({super.key, this.onChanged});
+
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: onChanged,
       autofocus: false,
       style: TextStyle(color: AppColors.textPrimary),
       decoration: InputDecoration(
@@ -88,11 +106,15 @@ class ContinueButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isEnabled = onPressed != null;
+    
     return FilledButton(
       onPressed: onPressed,
       style: FilledButton.styleFrom(
         foregroundColor: AppColors.buttonPrimaryText,
-        backgroundColor: AppColors.buttonPrimaryBackground,
+        backgroundColor: isEnabled 
+          ? AppColors.buttonPrimaryBackground
+          : AppColors.buttonPrimaryBackground.withOpacity(0.5),
         textStyle: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w600,
