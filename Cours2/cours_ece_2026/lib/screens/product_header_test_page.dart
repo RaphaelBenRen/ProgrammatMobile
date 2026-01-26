@@ -1,15 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:formation_flutter/model/button_state.dart';
+import 'package:formation_flutter/model/product.dart';
 import 'package:formation_flutter/widgets/product_header.dart';
 import 'package:formation_flutter/widgets/product_score_banner.dart';
 import 'package:formation_flutter/widgets/product_green_score_widget.dart';
 import 'package:formation_flutter/widgets/data_row.dart' as data_widgets;
+import 'package:formation_flutter/widgets/state_button.dart';
 
-/// Page de test pour le widget ProductHeader
-class ProductHeaderTestPage extends StatelessWidget {
+/// Page de test pour les widgets créés
+class ProductHeaderTestPage extends StatefulWidget {
   const ProductHeaderTestPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<ProductHeaderTestPage> createState() => _ProductHeaderTestPageState();
+}
+
+class _ProductHeaderTestPageState extends State<ProductHeaderTestPage> {
+  ButtonState? _selectedState1;
+  ButtonState? _selectedState2;
+  ButtonState? _selectedState3;
+  
+  late final Product _product;
+
+  @override
+  void initState() {
+    super.initState();
+    _product = generateProduct();
+  }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Test ProductHeader'),
@@ -36,26 +53,86 @@ class ProductHeaderTestPage extends StatelessWidget {
             const data_widgets.ProductDataRow(label: 'Vendu par', value: 'Carrefour', showDivider: true),
             const data_widgets.ProductDataRow(label: 'Prix', value: '3.99€', showDivider: false),
             
-            const SizedBox(height: 32),
+            const SizedBox(height: 16),
             
-            // Test 2 : Produit avec image réelle (Nutella)
-            const ProductHeader(
-              imageUrl: 'https://images.openfoodfacts.org/images/products/3017620422003/front_fr.47.400.jpg',
-              productName: 'Nutella Original',
-              brandName: 'Ferrero',
+            // Section "Recommanderiez-vous ce produit ?"
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Recommanderiez-vous ce produit ?',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  StateButton(
+                    state: ButtonState.positive,
+                    label: 'Oui',
+                    onPressed: () {},
+                  ),
+                  const SizedBox(width: 16),
+                  StateButton(
+                    state: ButtonState.negative,
+                    label: 'Non',
+                    onPressed: () {},
+                  ),
+                ],
+              ),
             ),
             
-            // Bandeau des scores
-            const ProductScoreBanner(
-              nutriscoreGrade: 'e',
-              novaGroup: 4,
-              greenScore: 'c',
+            const SizedBox(height: 32),
+            
+            // Test 2 : Produit avec image réelle (Nutella) - Using Product object
+            ProductHeader(
+              imageUrl: _product.picture ?? '',
+              productName: _product.name ?? 'Unknown Product',
+              brandName: _product.brands?.join(', ') ?? 'Unknown Brand',
+            ),
+            
+            // Bandeau des scores - Using Product.nutriScore
+            ProductScoreBanner(
+              nutriscoreGrade: _getNutriscoreGrade(_product.nutriScore),
+              novaGroup: _getNovaGroupNumber(_product.novaScore),
+              greenScore: _getGreenScoreGrade(_product.greenScore),
             ),
             
             // Données du produit
-            const data_widgets.ProductDataRow(label: 'Quantité', value: '400g', showDivider: true),
-            const data_widgets.ProductDataRow(label: 'Vendu par', value: 'Auchan', showDivider: true),
-            const data_widgets.ProductDataRow(label: 'Prix', value: '2.50€', showDivider: false),
+            data_widgets.ProductDataRow(label: 'Quantité', value: _product.quantity ?? 'N/A', showDivider: true),
+            data_widgets.ProductDataRow(label: 'Vendu par', value: _product.brands?.first ?? 'N/A', showDivider: true),
+            data_widgets.ProductDataRow(label: 'Prix', value: 'N/A', showDivider: false),
+            
+            const SizedBox(height: 16),
+            
+            // Section "Recommanderiez-vous ce produit ?"
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Recommanderiez-vous ce produit ?',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  StateButton(
+                    state: ButtonState.positive,
+                    label: 'Oui',
+                    onPressed: () {},
+                  ),
+                  const SizedBox(width: 16),
+                  StateButton(
+                    state: ButtonState.negative,
+                    label: 'Non',
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ),
             
             const SizedBox(height: 32),
             
@@ -77,6 +154,38 @@ class ProductHeaderTestPage extends StatelessWidget {
             const data_widgets.ProductDataRow(label: 'Quantité', value: '330ml', showDivider: true),
             const data_widgets.ProductDataRow(label: 'Vendu par', value: 'Leclerc', showDivider: true),
             const data_widgets.ProductDataRow(label: 'Prix', value: '1.50€', showDivider: false),
+            
+            const SizedBox(height: 16),
+            
+            // Section "Recommanderiez-vous ce produit ?"
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Recommanderiez-vous ce produit ?',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  StateButton(
+                    state: ButtonState.positive,
+                    label: 'Oui',
+                    onPressed: () {},
+                  ),
+                  const SizedBox(width: 16),
+                  StateButton(
+                    state: ButtonState.negative,
+                    label: 'Non',
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 32),
           ],
         ),
       ),
