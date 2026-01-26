@@ -18,17 +18,39 @@ class LoginPage extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          EmailField(),
-          ContinueButton(onPressed: null),
-          OrSeparator(),
-          SocialButton(
-            label: 'Apple',
-            iconPath: 'assets/apple_logo.svg',
-            onPressed: () {},
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              const SizedBox(height: 12),
+              EmailField(),
+              const SizedBox(height: 16),
+              ContinueButton(onPressed: () {}),
+              const SizedBox(height: 24),
+              const OrSeparator(),
+              const SizedBox(height: 24),
+              SocialButton(
+                label: 'Apple',
+                iconPath: 'assets/apple_logo.svg',
+                onPressed: () {},
+              ),
+              const SizedBox(height: 12),
+              SocialButton(
+                label: 'Google',
+                iconPath: 'assets/google_logo.svg',
+                onPressed: () {},
+              ),
+              const SizedBox(height: 12),
+              SocialButton(
+                label: 'Facebook',
+                iconPath: 'assets/facebook_logo.svg',
+                onPressed: () {},
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -87,7 +109,7 @@ class OrSeparator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
+      children: const <Widget>[
         Expanded(child: Divider(color: AppColors.divider)),
         Text('Or', style: TextStyle(color: AppColors.textSecondary)),
         Expanded(child: Divider(color: AppColors.divider)),
@@ -98,10 +120,7 @@ class OrSeparator extends StatelessWidget {
 
 class SocialButton extends StatelessWidget {
   const SocialButton({
-    super.key,
-    required this.label,
-    required this.iconPath,
-    required this.onPressed,
+    required this.label, required this.iconPath, required this.onPressed, super.key,
   });
 
   final String label;
@@ -112,11 +131,18 @@ class SocialButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
       onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        minimumSize: const Size.fromHeight(56),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        side: BorderSide(color: AppColors.inputFieldInactiveBackground),
+        foregroundColor: AppColors.textPrimary,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: <Widget>[
           SvgPicture.asset(iconPath, width: 24, height: 24),
-          Text('Continue with $label'),
+          const SizedBox(width: 12),
+          Text('Continue with $label', style: const TextStyle(fontSize: 16)),
         ],
       ),
     );
