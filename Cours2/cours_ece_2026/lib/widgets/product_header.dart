@@ -17,42 +17,28 @@ class ProductHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Image de fond avec bords arrondis en haut
-        Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16),
-              topRight: Radius.circular(16),
-            ),
-          ),
-          clipBehavior: Clip.antiAlias,
+        // Image en haut
+        SizedBox(
           height: 250,
           width: double.infinity,
           child: _buildImage(),
         ),
-        // Carte par-dessus l'image
-        Positioned(
-          top: 30,
-          left: 20,
-          right: 20,
+        // Carte blanche avec coins arrondis en haut uniquement
+        Transform.translate(
+          offset: const Offset(0, -24),
           child: Container(
-            decoration: BoxDecoration(
+            width: double.infinity,
+            decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(24),
+                topRight: Radius.circular(24),
+              ),
             ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 12,
-            ),
+            padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -60,7 +46,7 @@ class ProductHeader extends StatelessWidget {
                 Text(
                   productName,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textPrimary,
                   ),
