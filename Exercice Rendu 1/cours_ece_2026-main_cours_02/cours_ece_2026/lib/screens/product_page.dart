@@ -146,7 +146,7 @@ class _Nutriscore extends StatelessWidget {
       ProductNutriScore.C => 'res/drawables/nutriscore_c.png',
       ProductNutriScore.D => 'res/drawables/nutriscore_d.png',
       ProductNutriScore.E => 'res/drawables/nutriscore_e.png',
-      ProductNutriScore.unknown => 'TODO',
+      ProductNutriScore.unknown => 'res/drawables/nutriscore_unknown.png',
     };
   }
 }
@@ -254,19 +254,5 @@ class _GreenScore extends StatelessWidget {
       ProductGreenScore.F => 'Impact environnemental très élevé',
       ProductGreenScore.unknown => 'Score non calculé',
     };
-  }
-}
-
-class Test extends StatefulWidget {
-  const Test({super.key});
-
-  @override
-  State<Test> createState() => _TestState();
-}
-
-class _TestState extends State<Test> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
