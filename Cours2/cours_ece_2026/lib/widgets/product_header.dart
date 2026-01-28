@@ -1,32 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:formation_flutter/model/product.dart';
 import 'package:formation_flutter/res/app_colors.dart';
+import 'package:formation_flutter/widgets/product_provider.dart';
 
-/// Widget réutilisable pour l'entête des écrans produits
-/// Affiche : image, nom du produit et marque dans une Stack
 class ProductHeader extends StatelessWidget {
   const ProductHeader({
     super.key,
-    required this.imageUrl,
-    required this.productName,
-    required this.brandName,
   });
-
-  final String imageUrl;
-  final String productName;
-  final String brandName;
 
   @override
   Widget build(BuildContext context) {
+    final Product product = ProductProvider.of(context);
+    final String imageUrl = product.picture ?? '';
+    final String productName = product.name ?? 'Produit inconnu';
+    final String brandName = product.brands?.join(', ') ?? 'Marque inconnue';
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Image en haut
         SizedBox(
           height: 250,
           width: double.infinity,
-          child: _buildImage(),
+          child: _buildImage(imageUrl),
         ),
-        // Carte blanche avec coins arrondis en haut uniquement
         Transform.translate(
           offset: const Offset(0, -24),
           child: Container(
@@ -42,7 +38,6 @@ class ProductHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Nom du produit
                 Text(
                   productName,
                   style: const TextStyle(
@@ -54,7 +49,6 @@ class ProductHeader extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
-                // Marque
                 Text(
                   brandName,
                   style: const TextStyle(
@@ -72,10 +66,8 @@ class ProductHeader extends StatelessWidget {
     );
   }
 
-  /// Construit l'image appropriée (locale ou réseau)
-  Widget _buildImage() {
+  Widget _buildImage(String imageUrl) {
     if (imageUrl.startsWith('asset:')) {
-      // Image locale
       final assetPath = imageUrl.replaceFirst('asset:', '');
       return Image.asset(
         assetPath,
@@ -88,7 +80,6 @@ class ProductHeader extends StatelessWidget {
         },
       );
     } else {
-      // Image réseau
       return Image.network(
         imageUrl,
         fit: BoxFit.cover,
@@ -100,4 +91,5 @@ class ProductHeader extends StatelessWidget {
         },
       );
     }
-  }}
+  }
+}

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:formation_flutter/model/button_state.dart';
+import 'package:formation_flutter/model/product.dart';
 import 'package:formation_flutter/widgets/product_header.dart';
+import 'package:formation_flutter/widgets/product_provider.dart';
 import 'package:formation_flutter/widgets/product_score_banner.dart';
 import 'package:formation_flutter/widgets/data_row.dart' as data_widgets;
 import 'package:formation_flutter/widgets/state_button.dart';
 
-/// Page de test pour les widgets créés
 class ProductHeaderTestPage extends StatefulWidget {
   const ProductHeaderTestPage({super.key});
 
@@ -16,6 +17,8 @@ class ProductHeaderTestPage extends StatefulWidget {
 class _ProductHeaderTestPageState extends State<ProductHeaderTestPage> {
   @override
   Widget build(BuildContext context) {
+    final Product product = ProductProvider.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Test ProductHeader'),
@@ -23,22 +26,18 @@ class _ProductHeaderTestPageState extends State<ProductHeaderTestPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Produit 1 : Salade Verte Bio (données en dur)
-            const ProductHeader(
-              imageUrl: 'asset:photo-1482049016688-2d3e1b311543.avif',
-              productName: 'Salade Verte Bio',
-              brandName: 'Ferme Locale',
-            ),
-            const ProductScoreBanner(
-              nutriscoreGrade: 'a',
-              novaGroup: 1,
-              greenScore: 'a+',
-            ),
-            const data_widgets.ProductDataRow(label: 'Quantité', value: '500g', showDivider: true),
-            const data_widgets.ProductDataRow(label: 'Vendu par', value: 'Carrefour', showDivider: true),
-            const data_widgets.ProductDataRow(label: 'Prix', value: '3.99€', showDivider: false),
+            ProductHeader(),
+            const ProductScoreBanner(),
+            data_widgets.ProductDataRow(
+                label: 'Quantité', value: product.quantity, showDivider: true),
+            data_widgets.ProductDataRow(
+                label: 'Vendu par',
+                value: product.manufacturingCountries?.join(', '),
+                showDivider: true),
+            data_widgets.ProductDataRow(
+                label: 'Code-barres', value: product.barcode, showDivider: false),
             const SizedBox(height: 16),
-            _buildRecommendationSection(context, 'ce produit'),
+            _buildRecommendationSection(context),
             const SizedBox(height: 32),
           ],
         ),
@@ -46,7 +45,10 @@ class _ProductHeaderTestPageState extends State<ProductHeaderTestPage> {
     );
   }
 
-  Widget _buildRecommendationSection(BuildContext context, String productName) {
+  Widget _buildRecommendationSection(BuildContext context) {
+    final Product product = ProductProvider.of(context);
+    final String productName = product.name ?? 'ce produit';
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:formation_flutter/model/product.dart';
 import 'package:formation_flutter/res/app_colors.dart';
 import 'package:formation_flutter/res/app_vectorial_images.dart';
 import 'package:formation_flutter/screens/product_header_test_page.dart';
+import 'package:formation_flutter/widgets/product_provider.dart';
 
 // Reminder: The initial instructions mentioned creating a reusable widget
 // for the social login button. For simplicity and to keep changes
@@ -27,7 +29,10 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: const ProductHeaderTestPage(),
+      home: ProductProvider(
+        product: Product.generateProduct(),
+        child: const ProductHeaderTestPage(),
+      ),
     );
   }
 }
