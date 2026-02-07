@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:formation_flutter/model/product.dart';
 import 'package:formation_flutter/res/app_colors.dart';
-import 'package:formation_flutter/widgets/product_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProductHeader extends StatelessWidget {
   const ProductHeader({
@@ -10,7 +10,7 @@ class ProductHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Product product = ProductProvider.of(context);
+    final Product product = context.watch<Product>();
     final String imageUrl = product.picture ?? '';
     final String productName = product.name ?? 'Produit inconnu';
     final String brandName = product.brands?.join(', ') ?? 'Marque inconnue';
@@ -30,11 +30,11 @@ class ProductHeader extends StatelessWidget {
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24),
-                topRight: Radius.circular(24),
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
               ),
             ),
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
+            padding: const EdgeInsets.fromLTRB(20, 30, 20, 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

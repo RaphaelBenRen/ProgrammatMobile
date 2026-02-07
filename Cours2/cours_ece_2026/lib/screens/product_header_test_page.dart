@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:formation_flutter/model/button_state.dart';
 import 'package:formation_flutter/model/product.dart';
 import 'package:formation_flutter/widgets/product_header.dart';
-import 'package:formation_flutter/widgets/product_provider.dart';
 import 'package:formation_flutter/widgets/product_score_banner.dart';
 import 'package:formation_flutter/widgets/data_row.dart' as data_widgets;
 import 'package:formation_flutter/widgets/state_button.dart';
+import 'package:provider/provider.dart';
 
 class ProductHeaderTestPage extends StatefulWidget {
   const ProductHeaderTestPage({super.key});
@@ -17,7 +17,7 @@ class ProductHeaderTestPage extends StatefulWidget {
 class _ProductHeaderTestPageState extends State<ProductHeaderTestPage> {
   @override
   Widget build(BuildContext context) {
-    final Product product = ProductProvider.of(context);
+    final Product product = context.watch<Product>();
 
     return Scaffold(
       appBar: AppBar(
@@ -46,7 +46,7 @@ class _ProductHeaderTestPageState extends State<ProductHeaderTestPage> {
   }
 
   Widget _buildRecommendationSection(BuildContext context) {
-    final Product product = ProductProvider.of(context);
+    final Product product = context.watch<Product>();
     final String productName = product.name ?? 'ce produit';
 
     return Column(

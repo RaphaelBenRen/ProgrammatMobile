@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:formation_flutter/model/product.dart';
-import 'package:formation_flutter/res/app_colors.dart';
 import 'package:formation_flutter/widgets/custom_divider.dart';
-import 'package:formation_flutter/widgets/product_green_score_widget.dart';
 import 'package:formation_flutter/widgets/product_nova_score_widget.dart';
 import 'package:formation_flutter/widgets/product_nutriscore_widget.dart';
-import 'package:formation_flutter/widgets/product_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProductScoreBanner extends StatelessWidget {
   const ProductScoreBanner({
@@ -14,7 +12,7 @@ class ProductScoreBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Product product = ProductProvider.of(context);
+    final Product product = context.watch<Product>();
     final String? nutriscoreGrade = product.nutriScore?.name;
     final int? novaGroup = product.novaScore?.index;
 
@@ -34,7 +32,7 @@ class ProductScoreBanner extends StatelessWidget {
         children: [
           Expanded(
             flex: 44,
-            child: ProductNutriscoreWidget(score: nutriscoreGrade),
+            child: ProductNutriscoreWidget(score: nutriscoreGrade ?? 'unknown'),
           ),
           const CustomDivider(
             axis: Axis.vertical,
@@ -42,7 +40,7 @@ class ProductScoreBanner extends StatelessWidget {
           ),
           Expanded(
             flex: 56,
-            child: ProductNovaScoreWidget(group: novaGroup),
+            child: ProductNovaScoreWidget(group: (novaGroup ?? -1) + 1),
           ),
         ],
       ),
