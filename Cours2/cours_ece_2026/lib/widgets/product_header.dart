@@ -10,7 +10,11 @@ class ProductHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Product product = context.watch<Product>();
+    final Product? product = context.watch<Product?>();
+    
+    // Fallback if product is null, though it should be handled by the parent
+    if (product == null) return const SizedBox();
+
     final String imageUrl = product.picture ?? '';
     final String productName = product.name ?? 'Produit inconnu';
     final String brandName = product.brands?.join(', ') ?? 'Marque inconnue';

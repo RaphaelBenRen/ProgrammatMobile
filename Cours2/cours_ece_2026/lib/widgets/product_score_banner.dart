@@ -12,7 +12,10 @@ class ProductScoreBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Product product = context.watch<Product>();
+    final Product? product = context.watch<Product?>();
+    
+    if (product == null) return const SizedBox();
+
     final String? nutriscoreGrade = product.nutriScore?.name;
     final int? novaGroup = product.novaScore?.index;
 

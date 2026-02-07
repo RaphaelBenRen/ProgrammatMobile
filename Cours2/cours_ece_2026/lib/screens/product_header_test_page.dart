@@ -17,36 +17,69 @@ class ProductHeaderTestPage extends StatefulWidget {
 class _ProductHeaderTestPageState extends State<ProductHeaderTestPage> {
   @override
   Widget build(BuildContext context) {
-    final Product product = context.watch<Product>();
+    // Watch for nullable Product to handle loading state
+    final Product? product = context.watch<Product?>();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Test ProductHeader'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ProductHeader(),
-            const ProductScoreBanner(),
-            data_widgets.ProductDataRow(
-                label: 'Quantité', value: product.quantity, showDivider: true),
-            data_widgets.ProductDataRow(
-                label: 'Vendu par',
-                value: product.manufacturingCountries?.join(', '),
-                showDivider: true),
-            data_widgets.ProductDataRow(
-                label: 'Code-barres', value: product.barcode, showDivider: false),
-            const SizedBox(height: 16),
-            _buildRecommendationSection(context),
-            const SizedBox(height: 32),
-          ],
-        ),
+      // If product is null, show loader. Otherwise, show content.
+      body: product == null ? const _ProductLoader() : const _ProductDetails(),
+    );
+  }
+}
+
+class _ProductLoader extends StatelessWidget {
+  const _ProductLoader();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+}
+
+class _ProductDetails extends StatelessWidget {
+  const _ProductDetails();
+
+  @override
+  Widget build(BuildContext context) {
+    // We can safely watch for Product (non-nullable) here because this widget 
+    // is only rendered when Product is not null in the parent.
+    // However, since the Provider is of type Product?, we must watch Product? 
+    // and cast or handle it. For safety and simplicity given the Provider type:
+    final Product? product = context.watch<Product?>();
+
+    if (product == null) return const SizedBox();
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const ProductHeader(),
+          const ProductScoreBanner(),
+          data_widgets.ProductDataRow(
+              label: 'Quantité',
+              value: product.quantity,
+              showDivider: true),
+          data_widgets.ProductDataRow(
+              label: 'Vendu par',
+              value: product.manufacturingCountries?.join(', '),
+              showDivider: true),
+          data_widgets.ProductDataRow(
+              label: 'Code-barres',
+              value: product.barcode,
+              showDivider: false),
+          const SizedBox(height: 16),
+          _buildRecommendationSection(context, product),
+          const SizedBox(height: 32),
+        ],
       ),
     );
   }
 
-  Widget _buildRecommendationSection(BuildContext context) {
-    final Product product = context.watch<Product>();
+  Widget _buildRecommendationSection(BuildContext context, Product product) {
     final String productName = product.name ?? 'ce produit';
 
     return Column(

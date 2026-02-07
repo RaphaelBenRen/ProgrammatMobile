@@ -29,8 +29,12 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: Provider<Product>(
-        create: (_) => generateProduct(),
+      home: FutureProvider<Product?>(
+        initialData: null,
+        create: (_) => Future.delayed(
+          const Duration(seconds: 3),
+          () => generateProduct(),
+        ),
         child: const ProductHeaderTestPage(),
       ),
     );
