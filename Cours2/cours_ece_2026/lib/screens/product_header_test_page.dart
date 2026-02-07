@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:formation_flutter/model/button_state.dart';
 import 'package:formation_flutter/model/product.dart';
+import 'package:formation_flutter/model/product_view_model.dart';
 import 'package:formation_flutter/widgets/product_header.dart';
 import 'package:formation_flutter/widgets/product_score_banner.dart';
 import 'package:formation_flutter/widgets/data_row.dart' as data_widgets;
@@ -17,15 +18,21 @@ class ProductHeaderTestPage extends StatefulWidget {
 class _ProductHeaderTestPageState extends State<ProductHeaderTestPage> {
   @override
   Widget build(BuildContext context) {
-    // Watch for nullable Product to handle loading state
-    final Product? product = context.watch<Product?>();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Test ProductHeader'),
+    return ChangeNotifierProvider(
+      create: (_) => ProductViewModel(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Test ProductHeader'),
+        ),
+        body: Consumer<ProductViewModel>(
+          builder: (context, viewModel, child) {
+            final product = viewModel.product;
+            return product == null
+                ? const _ProductLoader()
+                : const _ProductDetails();
+          },
+        ),
       ),
-      // If product is null, show loader. Otherwise, show content.
-      body: product == null ? const _ProductLoader() : const _ProductDetails(),
     );
   }
 }
@@ -46,11 +53,8 @@ class _ProductDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // We can safely watch for Product (non-nullable) here because this widget 
-    // is only rendered when Product is not null in the parent.
-    // However, since the Provider is of type Product?, we must watch Product? 
-    // and cast or handle it. For safety and simplicity given the Provider type:
-    final Product? product = context.watch<Product?>();
+    // We access the ViewModel to get the product
+    final Product? product = context.watch<ProductViewModel>().product;
 
     if (product == null) return const SizedBox();
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:formation_flutter/model/product.dart';
+import 'package:formation_flutter/model/product_view_model.dart';
 import 'package:formation_flutter/widgets/custom_divider.dart';
 import 'package:formation_flutter/widgets/product_nova_score_widget.dart';
 import 'package:formation_flutter/widgets/product_nutriscore_widget.dart';
@@ -12,7 +13,7 @@ class ProductScoreBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Product? product = context.watch<Product?>();
+    final Product? product = context.watch<ProductViewModel>().product;
     
     if (product == null) return const SizedBox();
 

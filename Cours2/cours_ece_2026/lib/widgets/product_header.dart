@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:formation_flutter/model/product.dart';
+import 'package:formation_flutter/model/product_view_model.dart';
 import 'package:formation_flutter/res/app_colors.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +11,7 @@ class ProductHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Product? product = context.watch<Product?>();
+    final Product? product = context.watch<ProductViewModel>().product;
     
     // Fallback if product is null, though it should be handled by the parent
     if (product == null) return const SizedBox();
